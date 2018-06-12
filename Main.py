@@ -3,19 +3,9 @@ import re
 import os
 import threading
 
-
 class Main:
     def __init__(self):
-        self.torrent_path = 'torrent';
-
-        type_dict = {
-            "asia": 2,
-            "asia_code": 15,
-            "e&a": 4,
-            "anime": 5,
-            "china": 25,
-            "china_letter": 26,
-        }
+        self.torrent_path = 'torrent'
 
         self.header_data = {
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
