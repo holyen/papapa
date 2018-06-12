@@ -123,4 +123,4 @@ class Main:
 
 if __name__ == "__main__":
     c = Main()
-    c.start(downloadtype="yazhou", page_start=1, page_end=50, max_thread_num=50)
+    c.start(downloadtype="yazhou", page_start=1, page_end=1, max_thread_num=10)
