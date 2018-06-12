@@ -2,11 +2,12 @@ import requests
 import re
 import os
 import threading
+import socket
 
 class Main:
     def __init__(self):
         self.torrent_path = 'torrent'
-
+        self.not_proxies_ip=['119.28.83.206']
         self.header_data = {
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
             'Accept-Encoding': '',
@@ -18,13 +19,32 @@ class Main:
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                           'Chrome/59.0.3071.115 Safari/537.36',
         }
-        self.proxies = {
-            'https': 'https://127.0.0.1:1087',
-            'http': 'http://127.0.0.1:1087'
-        }
+        if self.get_host_ip() not in self.not_proxies_ip:
+            self.proxies = {
+                'https': 'https://127.0.0.1:1087',
+                'http': 'http://127.0.0.1:1087'
+            }
+        else:
+            self.proxies= { }
+        
         # if not exist torrent_dir, then create it
         if self.torrent_path not in os.listdir(os.getcwd()):
             os.makedirs(self.torrent_path)
+
+    def get_host_ip(self):
+        """
+        查询本机ip地址
+        :return: ip
+        """
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.connect(('8.8.8.8', 80))
+            ip = s.getsockname()[0]
+        finally:
+            s.close()
+
+        return ip
+
 
     def index_page(self, fid=2, page=1, downloadtype='wu'):
         p = re.compile("<h3><a href=\"(.+?)\"")
@@ -120,4 +140,7 @@ class Main:
 
 if __name__ == "__main__":
     c = Main()
-    c.start(downloadtype="china", page_start=1, page_end=1)
+    c.start(downloadtype="china", page_start=1, page_end=200)
+    c.start(downloadtype="asia", page_start=1, page_end=200)
+    c.start(downloadtype="asia_code", page_start=1, page_end=200)
+    c.start(downloadtype="china_letter", page_start=1, page_end=200)
