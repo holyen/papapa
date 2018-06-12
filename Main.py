@@ -8,6 +8,15 @@ class Main:
     def __init__(self):
         self.torrent_path = 'torrent';
 
+        type_dict = {
+            "asia": 2,
+            "asia_code": 15,
+            "e&a": 4,
+            "anime": 5,
+            "china": 25,
+            "china_letter": 26,
+        }
+
         self.header_data = {
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
             'Accept-Encoding': '',
@@ -87,12 +96,12 @@ class Main:
 
     def start(self, downloadtype, page_start=1, page_end=10, max_thread_num=10):
         type_dict = {
-            "yazhou": 2,
-            "yazhouym": 15,
-            "oumei": 4,
-            "dongman": 5,
-            "guochan": 25,
-            "zhongwen": 26,
+            "asia": 2,
+            "asia_code": 15,
+            "e&a": 4,
+            "anime": 5,
+            "china": 25,
+            "china_letter": 26,
         }
 
         # if not exist downloadtype_dir, then create it
@@ -106,10 +115,8 @@ class Main:
         max_thread_num = min(page_end - page_start + 1, max_thread_num)
         thread_list = []
         for page in range(page_start, page_end + 1):
-
             if str(page) not in os.listdir(os.getcwd() + os.sep + self.torrent_path + os.sep + downloadtype):
                 os.makedirs(self.torrent_path + os.sep + downloadtype + os.sep + str(page))
-
             thread_list.append(threading.Thread(target=self.index_page, args=(fid, page, downloadtype)))
             # create thread to search page and download torrent
             # multi-thread in index page not download torrent, it's deliberate to avoid DDOS
@@ -123,4 +130,4 @@ class Main:
 
 if __name__ == "__main__":
     c = Main()
-    c.start(downloadtype="yazhou", page_start=1, page_end=1, max_thread_num=10)
+    c.start(downloadtype="china", page_start=1, page_end=1)
